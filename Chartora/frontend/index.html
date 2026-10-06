@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b10">
+  <title>Chartora — Chart Scanner</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">M</div>
+      <div><b>MARKET<span>PATTERN</span></b><small>AI CHART SCANNER</small></div>
+    </div>
+    <nav>
+      <div class="nav-label">WORKSPACE</div>
+      <a class="active">▦ Chart Scanner</a>
+      <a>◈ Pattern Library</a>
+      <a>◫ Historical Matches</a>
+      <a>⌁ Backtesting</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="engine"><span class="pulse"></span><div><b>Analysis engine</b><small>ONLINE</small></div></div>
+      <div class="disclaimer">Research tool only. Visual pattern analysis is an estimate, not a guaranteed trade signal.</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <div>
+        <div class="eyebrow">QUANTITATIVE MARKET RESEARCH</div>
+        <h1>Chart <span>Scanner</span></h1>
+        <p>Upload a trading-chart screenshot and analyze its visible price structure.</p>
+      </div>
+      <div class="header-right"><div class="market-state"><i></i><span>ENGINE ONLINE</span></div></div>
+    </header>
+
+    <div id="error" class="error hidden"></div>
+
+    <section class="upload-panel panel">
+      <div class="panel-header">
+        <div><h2>1. Upload chart screenshot</h2><p>PNG, JPG or WEBP · best results with a clear candlestick chart</p></div>
+        <span class="research-badge">VISION SCAN</span>
+      </div>
+      <label class="dropzone" id="dropzone" for="chartFile">
+        <input id="chartFile" type="file" accept="image/png,image/jpeg,image/webp">
+        <div class="upload-icon">↑</div>
+        <strong id="fileName">Choose a screenshot</strong>
+        <span>or drag and drop it here</span>
+      </label>
+      <div class="preview-wrap hidden" id="previewWrap">
+        <img id="preview" alt="Chart preview">
+      </div>
+      <div class="upload-actions">
+        <button class="analyze-btn" id="scan"><span>ANALYZE SCREENSHOT</span><b>→</b></button>
+      </div>
+    </section>
+
+    <section class="hero-grid">
+      <div class="price-card">
+        <div class="card-top"><div><span class="label">DETECTED TREND</span><div class="big-price" id="visualTrend">—</div></div><div class="asset-pill"><span id="quality">—</span><i></i></div></div>
+        <div class="mini-stats">
+          <div><span>Confidence</span><b id="confidence">—</b></div>
+          <div><span>Candle bias</span><b id="candleBias">—</b></div>
+          <div><span>Structure</span><b id="structureShort">—</b></div>
+          <div><span>Coverage</span><b id="coverage">—</b></div>
+        </div>
+      </div>
+
+      <div class="score-card">
+        <div class="score-head"><div><span class="label">VISUAL CONFIDENCE</span><strong id="score">—</strong></div><div class="score-ring"><span id="scoreSmall">—</span></div></div>
+        <div class="score-track"><i id="scoreBar"></i></div>
+        <p>Confidence reflects how much usable chart structure was detected in the screenshot.</p>
+      </div>
+
+      <div class="stats-card">
+        <span class="label">IMAGE</span>
+        <div class="sample-number" id="dimensions">—</div>
+        <div class="sample-sub">detected image size</div>
+        <div class="bias"><span>Chart quality</span><b id="quality2">—</b></div>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <div class="panel">
+        <div class="panel-header"><div><h2>Detected chart levels</h2><p>Relative screen positions only — not price values</p></div></div>
+        <div id="levels" class="levels"></div>
+        <div class="level-note">To convert these into actual prices, the app needs market data for the ticker or a more advanced OCR/vision model.</div>
+      </div>
+
+      <div class="panel state-panel">
+        <div class="panel-header"><div><h2>Visual market state</h2><p>What the screenshot suggests</p></div></div>
+        <div class="state-list">
+          <div><span>Trend</span><b id="stateTrend">—</b><em>PIXEL ANALYSIS</em></div>
+          <div><span>Candle bias</span><b id="stateBias">—</b><em>COLOR BALANCE</em></div>
+          <div><span>Structure</span><b id="stateStructure">—</b><em>RECENT VS EARLIER</em></div>
+          <div><span>Green pixels</span><b id="greenPixels">—</b><em>DETECTED</em></div>
+          <div><span>Red pixels</span><b id="redPixels">—</b><em>DETECTED</em></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel market-cross">
+      <div class="panel-header">
+        <div><h2>2. Optional historical cross-check</h2><p>Enter the same ticker shown in your screenshot to compare against real historical market data.</p></div>
+      </div>
+      <div class="command-bar compact">
+        <div class="control"><label>ASSET</label><input id="symbol" value="BTC-USD" placeholder="BTC-USD"></div>
+        <div class="control"><label>TIMEFRAME</label><select id="interval"><option value="1d" selected>1D</option><option value="1h">1H</option><option value="30m">30M</option><option value="15m">15M</option></select></div>
+        <div class="control"><label>HISTORY</label><select id="period"><option value="1y">1Y</option><option value="2y">2Y</option><option value="5y" selected>5Y</option><option value="10y">10Y</option><option value="max">MAX</option></select></div>
+        <div class="control"><label>PATTERN WINDOW</label><input id="window" type="number" min="20" max="300" value="60"></div>
+        <div class="control"><label>FORWARD</label><input id="forward" type="number" min="5" max="100" value="20"></div>
+        <button class="analyze-btn" id="marketAnalyze"><span>RUN HISTORICAL MATCH</span><b>→</b></button>
+      </div>
+    </section>
+
+    <section id="marketResults" class="hidden">
+      <section class="hero-grid">
+        <div class="price-card"><div class="card-top"><div><span class="label">CURRENT PRICE</span><div class="big-price" id="price">—</div></div><div class="asset-pill"><span id="assetName">—</span><i></i></div></div><div class="mini-stats"><div><span>Trend</span><b id="trend">—</b></div><div><span>RSI</span><b id="rsi">—</b></div><div><span>Momentum</span><b id="momentum">—</b></div><div><span>Volatility</span><b id="volatility">—</b></div></div></div>
+        <div class="score-card"><div class="score-head"><div><span class="label">HISTORICAL SIMILARITY</span><strong id="similarity">—</strong></div></div><div class="score-track"><i id="marketBar"></i></div><p>Similarity to prior price structures in the selected history.</p></div>
+        <div class="stats-card"><span class="label">HISTORICAL SAMPLE</span><div class="sample-number" id="cases">—</div><div class="sample-sub">matched historical patterns</div><div class="bias"><span>Historical bias</span><b id="bias">—</b></div></div>
+      </section>
+
+      <section class="dashboard-grid second">
+        <div class="panel"><div class="panel-header"><div><h2>Historical outcomes</h2><p>Observed after the closest matches</p></div></div><div class="outcome-grid"><div class="outcome up"><span>UP</span><strong id="up">—</strong></div><div class="outcome down"><span>DOWN</span><strong id="down">—</strong></div><div class="outcome flat"><span>FLAT</span><strong id="flat">—</strong></div></div><div class="return-row"><div><span>AVG RETURN</span><b id="avgReturn">—</b></div><div><span>MEDIAN</span><b id="medianReturn">—</b></div><div><span>BEST MOVE</span><b id="favorable">—</b></div><div><span>WORST MOVE</span><b id="adverse">—</b></div></div></div>
+        <div class="panel scenario-panel"><div class="panel-header"><div><h2>Research scenario</h2><p>ATR-based reference levels</p></div><span class="research-badge">RESEARCH</span></div><div class="scenario-level"><span>REFERENCE ENTRY</span><b id="entry">—</b></div><div class="scenario-level"><span>MODEL TARGET</span><b id="target">—</b></div><div class="scenario-level"><span>INVALIDATION</span><b id="invalidation">—</b></div><div class="scenario-note">Not a guaranteed trade instruction.</div></div>
+      </section>
+    </section>
+
+    <footer><span>CHARTORA</span> · Screenshot vision + historical pattern research · Not financial advice</footer>
+  </main>
+</div>
+
+<div id="loading" class="loading hidden"><div class="loader"></div><b id="loadingTitle">Analyzing screenshot</b><span id="loadingText">Detecting visible price structure...</span></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
